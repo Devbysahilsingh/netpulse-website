@@ -1,0 +1,5 @@
+Fonts bundled for offline use (SIL Open Font License 1.1, see each project):
+- Bricolage Grotesque (variable) - https://github.com/ateliertriay/bricolage
+- IBM Plex Sans - https://github.com/IBM/plex
+- JetBrains Mono (variable) - https://github.com/JetBrains/JetBrainsMono
+Files taken from the @fontsource packages (v5.3.0), latin subset.

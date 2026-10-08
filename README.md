@@ -1,32 +1,34 @@
 # NetPulse AI: website, documentation and downloads
 
 The public side of NetPulse AI:
-- **Website and documentation:** <https://devbysahilsingh.github.io/netpulse-website/>. MkDocs Material, built from `docs/` by `.github/workflows/pages.yml` and deployed to GitHub Pages.
-- **Downloads:** installers and CLI archives for Windows, Linux and macOS, attached to this repository's [Releases](https://github.com/Devbysahilsingh/netpulse-website/releases).
+- **Website and documentation:** <https://devbysahilsingh.github.io/netpulse-website/>. MkDocs Material 9.6.23 with a NetPulse theme layer, built by `.github/workflows/pages.yml` and deployed to GitHub Pages.
+- **Downloads:** installers and CLI archives for Windows, Linux and macOS on this repository's [Releases](https://github.com/Devbysahilsingh/netpulse-website/releases).
+- **AI access:** invite-only. Request a key with the form linked on the site.
 
-The NetPulse source code is in a private repository.
+The NetPulse source code is in a private repository. Licence: All rights reserved. Free to use (see `LICENSE`).
 
-## Download
-[Download page](https://devbysahilsingh.github.io/netpulse-website/download/) · [latest release](https://github.com/Devbysahilsingh/netpulse-website/releases/latest). NetPulse is invite-only for now: you need a personal access key ([FAQ](https://devbysahilsingh.github.io/netpulse-website/faq/#how-do-i-get-an-access-key)).
+## Layout
 
-## How the site works
-Releases drive the site; nothing version-specific is written by hand:
-- **`scripts/gen_downloads.py` runs before every build.** It reads the latest **published** release and writes three git-ignored files:
-  - `docs/assets/downloads.json` (version, date, files, sizes, URLs, SHA-256)
-  - `docs/download.md`
-  - `docs/releases.md` (every release's notes)
-- **Pages use placeholders** such as `{{ version }}`, `{{ windows_installer }}` and `{{ linux_deb }}`. `hooks/release_vars.py` fills them from `downloads.json`.
-- **`pages.yml` runs** on every push to `main` and whenever a release is published, edited or deleted. So publishing a release updates the site by itself.
+| Path | What |
+|---|---|
+| `mkdocs.yml` | Navigation, theme, and the one place for site settings: `extra.access_form_url` (the request form), `extra.github_handle`, `extra.license` |
+| `docs/` | Pages. `docs/docs/` = Docs tab, `docs/docs/cli/` = CLI reference, `docs/maintainer/` = **generated** copy of the maintainer guide (do not edit here) |
+| `overrides/` | Templates: `home.html`, `download.html`, `partials/header.html`, `partials/footer.html` |
+| `snippets/` | Reusable text (`--8<-- "name.md"`); `snippets/cli/` = **generated** from the real `netpulse --help` |
+| `hooks/release_vars.py` | Fills `{{ version }}`, file names, `{{ access_form_url }}` … and gives templates the release data |
+| `scripts/gen_downloads.py` | Runs before every build: latest published release → `docs/assets/downloads.json` and `docs/releases.md` (both git-ignored) |
+| `docs/assets/` | `netpulse.css`, `netpulse.js`, fonts, logo, screenshots (`screens/`) |
+
+Releases drive the site. Publishing, editing or deleting a release rebuilds it; nothing version-specific is written by hand.
 
 ## Working on the site
 ```bash
-pip install "mkdocs-material==9.6.*"
+pip install "mkdocs-material==9.6.23"
 python scripts/gen_downloads.py     # needs at least one published release
-mkdocs serve                        # http://127.0.0.1:8000
+mkdocs serve                        # http://127.0.0.1:8000/netpulse-website/
 mkdocs build --strict               # what CI runs
 ```
 
-## Maintainers
-Everything about releasing, AWS, the model and this site is in the **Maintainers** section of the website. It is generated from the private repository's `docs/MAINTAINER.md`, `docs/release-process.md` and `docs/release-checklist.md`; do not edit `docs/maintainer/` here.
+Everything about releasing, AWS, the model and this site is in the **Maintainers** section of the website.
 
 Nothing secret is ever published here: no access keys, no cloud credentials, no infrastructure state.

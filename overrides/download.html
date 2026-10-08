@@ -1,0 +1,112 @@
+{#- Download page. Every version, file name, size, URL and checksum comes from
+    config.extra.release (docs/assets/downloads.json, generated from the latest published
+    GitHub Release). Per-OS wording lives in the OS table below. -#}
+{% extends "main.html" %}
+{% set rel = config.extra.release %}
+{% set f = rel.by_key %}
+{% set form = config.extra.access_form_url %}
+{% set OS = [
+  {"name": "Windows", "rec": "windows_installer", "title": "NetPulse for Windows", "sub": "Desktop app + command line, one installer",
+   "type": "Installer (.exe)", "sys": "Windows 10 / 11",
+   "icon": '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10.5 4.5v7H3zM11.5 4.3 21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg>',
+   "other": [["windows_cli", "Command line only", "For servers and scripts. The installer already includes it."]],
+   "steps": ["Download the installer above.",
+             "Install the free <a href='https://npcap.com/#download'>Npcap</a> driver once (NetPulse checks for it and links to it).",
+             "Run the installer. If SmartScreen says <i>Windows protected your PC</i>: <b>More info → Run anyway</b>.",
+             "Open <b>NetPulse</b> from the Start menu.",
+             "Paste your access key (no key yet? <a href='" ~ form ~ "' target='_blank' rel='noopener'>request AI access</a>).",
+             "Press <b>Start protection</b>."],
+   "reqs": ["Windows 10 or 11, 64-bit", "Npcap (free, installed by you)", "About 30 MB of disk space", "Internet access to the NetPulse AI service"],
+   "note": ["warn", "Not code-signed yet", "Windows shows <i>Unknown publisher</i>. Compare the SHA-256 above with the release's checksum file if in doubt."],
+   "guide": "docs/install/windows/"},
+  {"name": "macOS", "rec": "macos_dmg", "title": "NetPulse for macOS", "sub": "Desktop app + command line in one disk image",
+   "type": "Disk image (.dmg)", "sys": "macOS 11+",
+   "icon": '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.5 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.1 2.5-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.5 1.3 0 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.5 1-1.4 1.3-2.7 1.4-2.8-.1 0-2.7-1-2.7-4.2zM14 5.2c.7-.8 1.2-2 1-3.2-1 .1-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3.1 1.1.1 2.2-.6 2.9-1.4z"/></svg>',
+   "other": [["macos_cli", "Command line only", "The app already includes it at NetPulse.app/Contents/MacOS/netpulse."]],
+   "steps": ["Download the .dmg and drag <b>NetPulse</b> into Applications.",
+             "First launch: <i>System Settings → Privacy &amp; Security → Open Anyway</i> (macOS 15+), or right-click → <b>Open</b> (macOS 11–14).",
+             "Allow capture: Wireshark's ChmodBPF helper, or the background service.",
+             "Paste your access key (no key yet? <a href='" ~ form ~ "' target='_blank' rel='noopener'>request AI access</a>).",
+             "Press <b>Start protection</b>."],
+   "reqs": ["macOS 11 Big Sur or newer", "Apple Silicon (M1 or newer); Intel Macs are not supported yet", "Internet access to the NetPulse AI service"],
+   "note": ["warn", "Not notarised by Apple yet", "macOS blocks the first launch until you allow it once, as shown in step 2."],
+   "guide": "docs/install/macos/"},
+  {"name": "Linux", "rec": "linux_deb", "title": "NetPulse for Linux", "sub": "Desktop app + command line · Debian, Ubuntu, Mint, Pop!_OS",
+   "type": "Debian package (.deb)", "sys": "Ubuntu 22.04+ / Debian 12+",
+   "icon": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 17 6-5-6-5M12 19h8"/></svg>',
+   "other": [["linux_appimage", "AppImage", "Any distribution, no installation. For the CLI use the archive below."], ["linux_cli", "Command line only", "Servers and headless machines."]],
+   "steps": ["<code>sudo apt install ./" ~ f.linux_deb.file ~ "</code>",
+             "Give the CLI capture rights: <code>sudo setcap cap_net_raw,cap_net_admin=eip /usr/bin/netpulse</code>",
+             "Open <b>NetPulse</b> and paste your access key (no key yet? <a href='" ~ form ~ "' target='_blank' rel='noopener'>request AI access</a>).",
+             "Start monitoring: <code>netpulse start</code>. The app shows the results."],
+   "reqs": ["x86_64: Ubuntu 22.04+, Debian 12+, Fedora 38+ or similar", "libpcap (installed with the .deb)", "Internet access to the NetPulse AI service"],
+   "note": ["info", "Why the CLI starts monitoring on Linux", "GTK refuses to run with capture capabilities, so the CLI (or the service) captures and the desktop app shows the results."],
+   "guide": "docs/install/linux/"}
+] %}
+{% block content %}
+<div class="md-typeset">
+  <h1>Download NetPulse</h1>
+  <div class="np-dl-meta">
+    <span>Latest version <b>{{ rel.version }}</b></span>
+    <span>Released <b>{{ rel.released }}</b></span>
+    <a href="{{ 'releases/' | url }}">Release notes</a>
+    <a href="{{ rel.release_page }}">All files on GitHub</a>
+    <a href="{{ 'assets/downloads.json' | url }}">downloads.json</a>
+  </div>
+
+  <div class="np-ostabs-root">
+    <div class="np-ostabs" role="tablist" aria-label="Operating system">
+      {% for o in OS %}<button role="tab" data-np-os="{{ o.name }}" aria-selected="false">{{ o.icon }}{{ o.name }}</button>{% endfor %}
+    </div>
+
+    {% for o in OS %}{% set r = f[o.rec] %}
+    <div class="np-ospanel" data-np-panel="{{ o.name }}" {% if not loop.first %}hidden{% endif %} role="tabpanel">
+      <div class="np-dl-grid">
+        <div>
+          <div class="np-card np-rec">
+            <div class="row1">
+              <div><span class="np-badge np-badge--green">Recommended</span><h2>{{ o.title }}</h2><div class="np-small">{{ o.sub }}</div></div>
+              <a class="np-btn np-btn--primary np-btn--lg" href="{{ r.url }}">Download for {{ o.name }}</a>
+            </div>
+            <div class="np-facts">
+              <dl><dt>Version</dt><dd>{{ rel.version }}</dd></dl>
+              <dl><dt>System</dt><dd>{{ o.sys }} · {{ r.arch }}</dd></dl>
+              <dl><dt>File</dt><dd>{{ o.type }}</dd></dl>
+              <dl><dt>Size</dt><dd>{{ r.size_mb }}</dd></dl>
+            </div>
+            <div class="np-sha"><span>SHA-256</span><code>{{ r.sha256 }}</code><button type="button" data-np-copy="{{ r.sha256 }}">Copy</button></div>
+            <div class="np-small" style="margin-top:.5rem">{{ r.file }} · released {{ rel.released }} · <a href="{{ 'releases/' | url }}">what's new</a></div>
+          </div>
+
+          <h3>Also for {{ o.name }}</h3>
+          <div class="np-card np-other">
+            {% for k, name, why in o.other %}{% set x = f[k] %}
+            <div class="item"><div><b>{{ name }}</b><div>{{ x.file }} · {{ x.size_mb }} · {{ why }}</div></div><a class="np-btn" href="{{ x.url }}">Download</a></div>
+            {% endfor %}
+          </div>
+
+          <div class="np-access"><div><b>You will need an AI access key</b><p>NetPulse is invite-only for now. No key is included in any download; you receive your own by e-mail.</p></div>
+            <a class="np-btn np-btn--primary" href="{{ form }}" target="_blank" rel="noopener">Request AI access</a></div>
+        </div>
+        <div>
+          <div class="np-card np-side"><h3>Install in {{ o.steps | length }} steps</h3>
+            <ol>{% for s in o.steps %}<li>{{ s }}</li>{% endfor %}</ol>
+            <p class="np-small" style="margin:.4rem 0 0"><a href="{{ o.guide | url }}">Full {{ o.name }} guide →</a></p></div>
+          <div class="np-note np-note--{{ o.note[0] }}"><b>{{ o.note[1] }}</b>{{ o.note[2] }}</div>
+          <div class="np-card np-side"><h3>Requirements</h3><ul class="np-check">{% for q in o.reqs %}<li>{{ q }}</li>{% endfor %}</ul></div>
+          <p class="np-small">Already installed? Install the new version over the old one: your settings, key and history are kept. <a href="{{ 'docs/updating/' | url }}">How updates work</a></p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2>Verify your download</h2>
+  <p>The installers are not code-signed yet, so check that your file is exactly the published one: its SHA-256 must equal the value here (also in the <code>SHA256SUMS-*.txt</code> files of the release).</p>
+  <table>
+    <thead><tr><th>File</th><th>Size</th><th>SHA-256</th></tr></thead>
+    <tbody>{% for x in rel.files %}<tr><td><a href="{{ x.url }}"><code>{{ x.file }}</code></a></td><td>{{ x.size_mb }}</td><td><code>{{ x.sha256 }}</code></td></tr>{% endfor %}</tbody>
+  </table>
+  <p>Windows (PowerShell): <code>Get-FileHash .\{{ f.windows_installer.file }} -Algorithm SHA256</code> · Linux: <code>sha256sum &lt;file&gt;</code> · macOS: <code>shasum -a 256 &lt;file&gt;</code></p>
+</div>
+{% endblock %}

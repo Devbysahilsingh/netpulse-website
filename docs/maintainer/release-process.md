@@ -1,4 +1,4 @@
-<!-- Generated from Devbysahilsingh/netpulse-ai docs/release-process.md by packaging/sync_website_docs.py. Do not edit here: edit the source and run the script again. -->
+<!-- Generated from Devbysahilsingh/netpulse-ai docs/maintainer/release-process.md by packaging/sync_website_docs.py. Do not edit here: edit the source and run the script again. -->
 
 # Release process
 
@@ -68,7 +68,7 @@ The `release` workflow:
 The run takes 15–35 minutes (Windows is the slowest).
 
 ### 6. Create the draft release on the public repo 🟠 CURRENTLY MANUAL
-(Automatic once `WEBSITE_RELEASE_TOKEN` is set: [maintainer guide §8](index.md#8-creating-a-new-release-and-publishing-the-installer).)
+(Automatic once `WEBSITE_RELEASE_TOKEN` is set: [Creating a release](releasing.md#making-the-draft-step-automatic-one-time-optional).)
 ```powershell
 python packaging/publish_release.py vX.Y.Z
 ```
@@ -103,13 +103,13 @@ Open https://devbysahilsingh.github.io/netpulse-website/download/:
 - click the Windows button: the download is the new file
 
 ### 9. Afterwards
-- `python packaging/sync_website_docs.py`, only if `docs/MAINTAINER.md`, this file or the checklist changed (🟠 CURRENTLY MANUAL).
+- `python packaging/sync_website_docs.py`, only if anything in `docs/maintainer/` changed (🟠 CURRENTLY MANUAL).
 - Users are **not notified automatically.** If the update matters (security fix), add a notice to the home page of the website (`docs/index.md` in the public repo).
 
 ---
 
 ## A. Desktop / CLI code update
-1. Change the code ([maintainer guide §3–5](index.md#3-making-code-changes)).
+1. Change the code ([Making code changes](making-changes.md), [desktop](updating-desktop.md), [CLI](updating-cli.md)).
 2. Steps 2 → 9 above. PATCH if it only fixes things; MINOR if users get something new.
 3. If a CLI command or option changed: update `docs/cli.md` in the public repo in the same release (website: scenario F).
 
@@ -165,7 +165,7 @@ terraform -chdir=infrastructure\aws plan -out=image.tfplan       # 1 to change
 terraform -chdir=infrastructure\aws apply image.tfplan
 ```
 
-**Verify:** run [maintainer guide §7](index.md#verify-the-api-after-any-aws-change) (`/v1/health`, 401 without a key, `config check`, a Bot capture scan).
+**Verify:** run [Verify the API](updating-aws.md#verify-the-api-after-any-aws-change) (`/v1/health`, 401 without a key, `config check`, a Bot capture scan).
 
 **Rules:**
 - `/v1` stays backward-compatible: only add optional fields.

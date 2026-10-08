@@ -1,10 +1,10 @@
-<!-- Generated from Devbysahilsingh/netpulse-ai docs/release-checklist.md by packaging/sync_website_docs.py. Do not edit here: edit the source and run the script again. -->
+<!-- Generated from Devbysahilsingh/netpulse-ai docs/maintainer/release-checklist.md by packaging/sync_website_docs.py. Do not edit here: edit the source and run the script again. -->
 
 # Release checklist
 
 Copy this list into the release commit message, or into an issue, and tick it as you go. The commands are in [release-process.md](release-process.md); the explanations are in the [maintainer guide](index.md).
 
-**Version:** `X.Y.Z` · **Type:** PATCH / MINOR / MAJOR ([rules](index.md#9-versioning)) · **Date:** ____
+**Version:** `X.Y.Z` · **Type:** PATCH / MINOR / MAJOR ([rules](versioning.md)) · **Date:** ____
 
 ### Before tagging
 - [ ] Code changes done; `git status` clean on `main`

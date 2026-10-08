@@ -1,0 +1,59 @@
+{#- Home page. Text lives here; version, date and the form link come from config
+    (extra.release from downloads.json, extra.access_form_url from mkdocs.yml). -#}
+{% extends "main.html" %}
+{% set rel = config.extra.release %}
+{% block extrahead %}<style>.md-main__inner { margin-top: 0; }</style>{% endblock %}
+{% block content %}
+<div class="np-home md-typeset">
+  <section class="np-hero">
+    <div>
+      <span class="np-badge np-badge--green">Version {{ rel.version }} · Windows · macOS · Linux</span>
+      <h1>Know when a connection on your computer looks like an attack.</h1>
+      <p class="np-lead">NetPulse watches the network connections of your computer and has an AI model, trained on real attack traffic, check every one. Plain answers for everyone; full detail for security professionals.</p>
+      <div class="np-cta">
+        <a class="np-btn np-btn--primary np-btn--lg" href="{{ 'download/' | url }}" data-np-download-os>Download NetPulse</a>
+        <a class="np-btn np-btn--lg" href="{{ 'docs/' | url }}">Documentation</a>
+        <a class="np-btn np-btn--lg" href="{{ config.extra.access_form_url }}" target="_blank" rel="noopener">Request AI access</a>
+      </div>
+      <p class="np-small">Free download · desktop app and command line in one package · released {{ rel.released }} · AI access is invite-only: <a href="{{ 'access/' | url }}">how it works</a></p>
+    </div>
+    <div class="np-card np-steps4">
+      <div class="t">From download to protected</div>
+      <ol>
+        <li><div><b>Download</b><span>The package for your system; it is preselected.</span></div></li>
+        <li><div><b>Install</b><span>Windows also needs the free Npcap driver; NetPulse checks and links to it.</span></div></li>
+        <li><div><b>Get an AI access key</b><span>Request it with a short form. Keys are issued individually.</span></div></li>
+        <li><div><b>Start monitoring</b><span>Paste the key, press <i>Start protection</i>.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="np-grid np-grid--3">
+    <div class="np-card np-feature"><div class="np-ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 13h4l3-8 5 15 3-9 1.5 2H22"/></svg></div><h3>Network monitoring</h3><p>Every connection your computer makes, grouped into flows, with the app and website behind it.</p></div>
+    <div class="np-card np-feature"><div class="np-ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6z"/></svg></div><h3>AI threat detection</h3><p>Bot, DoS/DDoS, password guessing, web attacks and infiltration, from a model trained on CSE-CIC-IDS2018.</p></div>
+    <div class="np-card np-feature"><div class="np-ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8"/></svg></div><h3>Desktop app</h3><p>NetPulse Home in plain words, and a Technical view with flows, alerts, devices and reports.</p></div>
+    <div class="np-card np-feature"><div class="np-ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 17 6-5-6-5M12 19h8"/></svg></div><h3>Command line</h3><p><code>netpulse</code>: 14 commands, JSON output and exit codes made for scripts.</p></div>
+    <div class="np-card np-feature"><div class="np-ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01"/></svg></div><h3>Background service</h3><p>Windows service, systemd or launchd. Restarts after failures and keeps unchecked connections across restarts.</p></div>
+    <div class="np-card np-feature"><div class="np-ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3>Local-first and private</h3><p>Only 62 anonymous measurements per connection are sent for analysis. Addresses, apps and websites stay on your computer.</p></div>
+  </div>
+
+  <h2>Three ways to use it, one engine</h2>
+  <div class="np-grid np-grid--3 np-ways">
+    <div class="np-card"><span class="np-badge np-badge--green">For everyone</span><h3>Desktop app</h3><p class="np-small">Open NetPulse, paste your key, press Start protection. Home tells you in plain words whether everything looks safe.</p><a href="{{ 'docs/desktop/' | url }}">Desktop app guide →</a></div>
+    <div class="np-card"><span class="np-badge np-badge--blue">For professionals</span><h3>Command line</h3><p class="np-small">Included in every package.</p><pre><code>netpulse status
+netpulse threats --since 1h</code></pre><a href="{{ 'docs/cli/' | url }}">CLI reference →</a></div>
+    <div class="np-card"><span class="np-badge np-badge--grey">For servers</span><h3>Background service</h3><p class="np-small">Protection from boot, without a window.</p><pre><code>netpulse service install
+netpulse service start</code></pre><a href="{{ 'docs/service/' | url }}">Service guide →</a></div>
+  </div>
+
+  <div class="np-split">
+    <div><h2>What is sent for analysis</h2><p class="np-small">Verified by an automated test that records everything NetPulse sends.</p>
+      <ul><li>62 numeric measurements per connection (durations, sizes, timings, flags)</li><li>An opaque flow reference and your computer's name at the service</li><li>Your access key, over HTTPS</li></ul></div>
+    <div><h2>What stays on your computer</h2><p class="np-small">Used only to explain results to you.</p>
+      <ul><li>IP addresses, app names, website names</li><li>Your Wi-Fi name and other devices</li><li>Your history, alerts and reports</li></ul></div>
+  </div>
+
+  <div class="np-access"><div><b>AI analysis needs a personal access key</b><p>NetPulse is invite-only for now. Request a key with a short form; it is issued individually and sent to you by e-mail.</p></div>
+    <a class="np-btn np-btn--primary" href="{{ config.extra.access_form_url }}" target="_blank" rel="noopener">Request AI access</a></div>
+</div>
+{% endblock %}

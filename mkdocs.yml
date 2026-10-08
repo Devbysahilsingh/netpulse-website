@@ -4,15 +4,28 @@ site_url: https://devbysahilsingh.github.io/netpulse-website/
 repo_url: https://github.com/Devbysahilsingh/netpulse-website
 repo_name: netpulse-website
 edit_uri: ""
-copyright: NetPulse AI · Installers are published on GitHub Releases
+copyright: "© 2026 NetPulse AI · All rights reserved. Free to use."
+
+# ---------------------------------------------------------------------------
+# Site-wide settings. THE ONE PLACE for these values:
+#   access_form_url  the "Request AI access" Google Form. Every button, link and
+#                    {{ access_form_url }} placeholder on the site reads it from here.
+#   github_handle    the only public contact.
+# Release data (version, files, sizes, checksums, dates) is NOT set here: it comes
+# from the latest published GitHub Release via scripts/gen_downloads.py.
+# ---------------------------------------------------------------------------
+extra:
+  access_form_url: https://docs.google.com/forms/d/e/1FAIpQLSfPFLSsNB7J1XPgXFIRYBVHGFFx_6ntw1rJKE5-KPefPVVP3A/viewform
+  github_handle: Devbysahilsingh
+  license: "All rights reserved. Free to use."
+  generator: false
 
 theme:
   name: material
+  custom_dir: overrides
   logo: assets/logo.svg
   favicon: assets/logo.svg
-  font:
-    text: Inter
-    code: JetBrains Mono
+  font: false                 # the app's own fonts, self-hosted in assets/fonts (netpulse.css)
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -27,19 +40,23 @@ theme:
   features:
     - navigation.tabs
     - navigation.sections
+    - navigation.indexes
     - navigation.top
     - navigation.footer
-    - navigation.indexes
+    - navigation.path
     - search.highlight
+    - search.suggest
     - content.code.copy
     - content.tabs.link
     - toc.follow
 
 hooks:
-  - hooks/release_vars.py      # {{ version }} etc. from docs/assets/downloads.json
+  - hooks/release_vars.py     # {{ version }}, {{ windows_installer }}, {{ access_form_url }} … and release data for templates
 
 extra_css:
-  - assets/extra.css
+  - assets/netpulse.css
+extra_javascript:
+  - assets/netpulse.js
 
 markdown_extensions:
   - admonition
@@ -53,34 +70,82 @@ markdown_extensions:
   - pymdownx.highlight: { anchor_linenums: false }
   - pymdownx.inlinehilite
   - pymdownx.keys
+  - pymdownx.snippets:
+      base_path: [snippets]   # reusable text (snippets/*.md) and the generated CLI reference (snippets/cli/)
+      check_paths: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
+not_in_nav: |
+  /about.md
+
 nav:
   - Home: index.md
   - Download: download.md
-  - Product:
-      - What is NetPulse AI: what-is-netpulse.md
-      - Features: features.md
-      - Architecture: architecture.md
-      - AI service (AWS): ai-service.md
-      - Security & privacy: security-privacy.md
-  - Install:
-      - install/index.md
-      - Windows: install/windows.md
-      - Linux: install/linux.md
-      - macOS: install/macos.md
-  - Use:
-      - Desktop app: desktop.md
-      - CLI reference: cli.md
-      - Background service: service.md
-      - Configuration: configuration.md
-  - Help:
-      - Troubleshooting: troubleshooting.md
-      - FAQ: faq.md
+  - Docs:
+      - docs/index.md
+      - Getting started:
+          - First run (start here): docs/first-run.md
+          - Request AI access: access.md
+      - Install:
+          - Overview: docs/install/index.md
+          - Windows: docs/install/windows.md
+          - macOS: docs/install/macos.md
+          - Linux: docs/install/linux.md
+          - Updating NetPulse: docs/updating.md
+          - Uninstalling: docs/uninstalling.md
+      - Use:
+          - Desktop app: docs/desktop.md
+          - Monitoring: docs/monitoring.md
+          - Alerts & threats: docs/alerts-threats.md
+          - Background service: docs/service.md
+          - Configuration: docs/configuration.md
+      - Concepts:
+          - How it works: docs/how-it-works.md
+          - AI service & AWS: docs/ai-service.md
+          - Security & privacy: docs/security-privacy.md
+      - Help:
+          - Troubleshooting: docs/troubleshooting.md
+          - FAQ: docs/faq.md
+  - CLI:
+      - docs/cli/index.md
+      - Commands:
+          - version: docs/cli/version.md
+          - status: docs/cli/status.md
+          - interfaces: docs/cli/interfaces.md
+          - start: docs/cli/start.md
+          - stop: docs/cli/stop.md
+          - monitor: docs/cli/monitor.md
+          - scan: docs/cli/scan.md
+          - threats: docs/cli/threats.md
+          - alerts: docs/cli/alerts.md
+          - devices: docs/cli/devices.md
+          - flows: docs/cli/flows.md
+          - report: docs/cli/report.md
+          - config: docs/cli/config.md
+          - service: docs/cli/service.md
   - Releases: releases.md
   - Maintainers:
-      - Maintainer guide: maintainer/index.md
-      - Release process: maintainer/release-process.md
-      - Release checklist: maintainer/release-checklist.md
+      - maintainer/index.md
+      - Shipping:
+          - Release process: maintainer/release-process.md
+          - Release checklist: maintainer/release-checklist.md
+          - Creating a release: maintainer/releasing.md
+          - Versioning: maintainer/versioning.md
+          - Installed users & updates: maintainer/installed-users.md
+      - Understanding:
+          - Architecture: maintainer/architecture.md
+          - Local development: maintainer/local-development.md
+          - Making code changes: maintainer/making-changes.md
+          - Secrets: maintainer/secrets.md
+      - Updating:
+          - Desktop app: maintainer/updating-desktop.md
+          - CLI & service: maintainer/updating-cli.md
+          - AI model: maintainer/updating-ai-model.md
+          - AWS: maintainer/updating-aws.md
+          - Website & docs: maintainer/updating-website.md
+      - Operations:
+          - Rollback: maintainer/rollback.md
+          - Troubleshooting: maintainer/troubleshooting.md
+          - Emergencies: maintainer/emergencies.md
