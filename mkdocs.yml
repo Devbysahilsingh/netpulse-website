@@ -1,0 +1,79 @@
+site_name: NetPulse AI
+site_description: AI network security for your computer. Download NetPulse for Windows, Linux and macOS.
+site_url: https://devbysahilsingh.github.io/netpulse-website/
+repo_url: https://github.com/Devbysahilsingh/netpulse-website
+repo_name: netpulse-website
+edit_uri: ""
+copyright: NetPulse AI 0.1.0 · Installers are published on GitHub Releases
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  font:
+    text: Inter
+    code: JetBrains Mono
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle: { icon: material/weather-night, name: Dark mode }
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle: { icon: material/weather-sunny, name: Light mode }
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+    - toc.follow
+
+extra_css:
+  - assets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc: { permalink: true }
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed: { alternate_style: true }
+  - pymdownx.highlight: { anchor_linenums: false }
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Download: download.md
+  - Product:
+      - What is NetPulse AI: what-is-netpulse.md
+      - Features: features.md
+      - Architecture: architecture.md
+      - AI service (AWS): ai-service.md
+      - Security & privacy: security-privacy.md
+  - Install:
+      - install/index.md
+      - Windows: install/windows.md
+      - Linux: install/linux.md
+      - macOS: install/macos.md
+  - Use:
+      - Desktop app: desktop.md
+      - CLI reference: cli.md
+      - Background service: service.md
+      - Configuration: configuration.md
+  - Help:
+      - Troubleshooting: troubleshooting.md
+      - FAQ: faq.md
+  - Releases: releases.md
