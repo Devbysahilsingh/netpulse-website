@@ -55,8 +55,6 @@ def expand_includes(markdown: str, page) -> str:
 
 
 def on_page_markdown(markdown, page, config, files):
-    if page.file.src_path.replace("\\", "/").startswith("maintainer/"):
-        return markdown  # the maintainer pages talk about the placeholders themselves
     markdown = expand_includes(markdown, page)
 
     def fill(match):

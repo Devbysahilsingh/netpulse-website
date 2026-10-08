@@ -60,11 +60,11 @@ window_s = 300
 | Key | Default | Meaning |
 |---|---|---|
 | `url` | the NetPulse AI service | Address of the inference API. Leave it unless told otherwise. |
-| `agent_id` | – | A label for this computer at the service (shown in the maintainer's logs). The access key alone identifies you; the name does not have to match anything. |
+| `agent_id` | – | A label for this computer. The access key alone identifies you; the name does not have to match anything. |
 | `token_file` | – | File holding your access key (one line, `np_…`). **Recommended**; required for the service. |
 | `token_env` | – | Alternative: the name of an environment variable holding the key (for terminals and CI). |
 | `timeout_s` | `10` | Seconds per request. |
-| `retry_attempts` | `3` | Retries for temporary failures (timeouts, 502/503/504, 429). Wrong keys are never retried. |
+| `retry_attempts` | `3` | How often to retry when the service is temporarily unavailable. A rejected key is never retried. |
 
 !!! warning "Never put the key itself in `netpulse.toml`"
     Use `token_file` (or `token_env`). Restrict the key file to your user: `chmod 600` on Linux/macOS; on Windows it lives in your own profile. `netpulse config show` never prints the key.
@@ -117,5 +117,5 @@ It checks:
 - the file
 - the key file
 - that the data and reports folders are writable
-- that the AI service is reachable, has a verified model, uses the same feature schema, and **accepts your key**
+- that the AI service is reachable, is compatible with this NetPulse version, and **accepts your key**
 - that live capture works

@@ -7,7 +7,7 @@ Only what the AI needs, and nothing that identifies you or what you do:
 |---|---|
 | 62 numeric measurements per connection (durations, packet counts and sizes, timings, TCP flags, window sizes, destination port, protocol) | IP addresses (yours and the other side's) |
 | An opaque flow reference (random-looking, to match answers to flows) | App names, website names, DNS names |
-| Your computer's name at the service (`agent_id`) and the access key (as a bearer token, over HTTPS) | Your Wi-Fi name, gateway, other devices |
+| Your computer's name label and your access key (over HTTPS) | Your Wi-Fi name, gateway, other devices |
 | | Packet contents (NetPulse never reads payloads into its features) |
 | | Your history, alerts and reports |
 
@@ -18,8 +18,8 @@ In the data folder, readable by your user: a SQLite history of flows and verdict
 
 ## Your access key
 - Saved in its own file (`secrets/agent.token` next to the settings), never in the settings file and never in logs. The key is never shown again after you enter it.
-- Sent only to the NetPulse AI service, over HTTPS, as a bearer token.
-- The service keeps only a hash of it.
+- Sent only to the NetPulse AI service, over HTTPS.
+- The service keeps only a fingerprint (hash) of it, never the key itself.
 - If it leaks, ask for it to be revoked and for a new one; nothing else changes.
 
 ## What the downloads contain

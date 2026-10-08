@@ -50,4 +50,3 @@ NetPulse stopped. Flows analysed: 1,111, alerts raised: 1.
 
 `0` success · `1` error (the message says what to do) · `2` usage error
 
-Generated syntax from `netpulse stop --help`; examples verified with NetPulse 0.1.0. Example addresses come from the public CSE-CIC-IDS2018 captures or are shortened.

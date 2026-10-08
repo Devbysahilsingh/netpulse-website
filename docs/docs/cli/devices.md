@@ -42,4 +42,3 @@ Devices are hosts seen in analysed traffic (passive; NetPulse does not probe the
 
 `0` success · `1` error (the message says what to do) · `2` usage error
 
-Generated syntax from `netpulse devices --help`; examples verified with NetPulse 0.1.0. Example addresses come from the public CSE-CIC-IDS2018 captures or are shortened.

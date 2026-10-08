@@ -21,7 +21,7 @@ NetPulse AI is network security software for a single computer. It watches the c
 - **Training data:** CSE-CIC-IDS2018, by the Communications Security Establishment (CSE) and the Canadian Institute for Cybersecurity (CIC). NetPulse is not affiliated with or endorsed by them.
 - **Packet capture:** Npcap on Windows (installed separately, under its own licence) and libpcap on Linux and macOS.
 - **Fonts:** Bricolage Grotesque, IBM Plex Sans and JetBrains Mono (SIL Open Font License 1.1).
-- **Built with:** Rust, Tauri, Python, XGBoost, MkDocs Material.
+- **Built with:** Rust, Tauri, Python and XGBoost.
 
 ## Contact
 Questions about NetPulse: [@{{ github_handle }}](https://github.com/Devbysahilsingh) on GitHub. Please do not post access keys or security problems in public issues.

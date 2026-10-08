@@ -12,7 +12,7 @@ The NetPulse source code is in a private repository. Licence: All rights reserve
 | Path | What |
 |---|---|
 | `mkdocs.yml` | Navigation, theme, and the one place for site settings: `extra.access_form_url` (the request form), `extra.github_handle`, `extra.license` |
-| `docs/` | Pages. `docs/docs/` = Docs tab, `docs/docs/cli/` = CLI reference, `docs/maintainer/` = **generated** copy of the maintainer guide (do not edit here) |
+| `docs/` | Pages. `docs/docs/` = Docs tab, `docs/docs/cli/` = CLI reference. User documentation only. |
 | `overrides/` | Templates: `home.html`, `download.html`, `partials/header.html`, `partials/footer.html` |
 | `snippets/` | Reusable text (`--8<-- "name.md"`); `snippets/cli/` = **generated** from the real `netpulse --help` |
 | `hooks/release_vars.py` | Fills `{{ version }}`, file names, `{{ access_form_url }}` … and gives templates the release data |
@@ -29,6 +29,6 @@ mkdocs serve                        # http://127.0.0.1:8000/netpulse-website/
 mkdocs build --strict               # what CI runs
 ```
 
-Everything about releasing, AWS, the model and this site is in the **Maintainers** section of the website.
+Maintainer documentation (releasing, AWS, the model, this site) is private and not published here.
 
 Nothing secret is ever published here: no access keys, no cloud credentials, no infrastructure state.

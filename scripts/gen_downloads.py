@@ -94,7 +94,7 @@ def manifest_for(rel):
 def releases_page(releases):
     out = ["---", "title: Releases", "---", "", "# Releases", "",
            "Every published version of NetPulse AI, newest first. Files: [Download](download.md) (latest) or each "
-           "version's GitHub Release (older versions). Versions follow [semantic versioning](maintainer/versioning.md).", ""]
+           "version's GitHub Release (older versions). How version numbers work: [Updating NetPulse](docs/updating.md#version-numbers).", ""]
     for i, r in enumerate(releases):
         latest = " (latest)" if i == 0 else ""
         out += [f"## {r['tag_name'].lstrip('v')}{latest}", "",

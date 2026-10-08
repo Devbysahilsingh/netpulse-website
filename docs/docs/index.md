@@ -27,7 +27,7 @@ NetPulse AI watches the network connections of your computer and has an AI model
 </div>
 <div class="np-card np-feature" markdown>
 ### Understand
-[How it works](how-it-works.md) · [AI service & AWS](ai-service.md) · [Security & privacy](security-privacy.md)
+[How it works](how-it-works.md) · [AI service](ai-service.md) · [Security & privacy](security-privacy.md)
 </div>
 <div class="np-card np-feature" markdown>
 ### Get help

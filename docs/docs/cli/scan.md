@@ -80,4 +80,3 @@ Capture files do not need Npcap. Needs an [access key](../../access.md) to analy
 
 `0` success · `1` error (the message says what to do) · `2` usage error · `3` nothing analysed (AI service unavailable) · `4` partly analysed
 
-Generated syntax from `netpulse scan --help`; examples verified with NetPulse 0.1.0. Example addresses come from the public CSE-CIC-IDS2018 captures or are shortened.

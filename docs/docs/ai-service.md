@@ -1,97 +1,37 @@
-# AI service (AWS)
+---
+title: AI service
+---
 
-The NetPulse model runs in the **NetPulse AI service** on Amazon Web Services (region *Asia Pacific – Mumbai*, `ap-south-1`). The desktop app, the CLI and the service all talk to it over HTTPS.
+# The NetPulse AI service
 
-```
-NetPulse on your computer
-   │  POST /v1/predict  (HTTPS, Authorization: Bearer <your access key>)
-   ▼
-API Gateway (HTTPS) ─► Lambda function (model server) ─► verified model bundle (model v2)
-                         │                                 (checksums + schema checked before use)
-                         └─ access keys stored only as SHA-256 hashes
-```
+NetPulse's threat analysis runs in the **NetPulse AI service**, hosted on Amazon Web Services (AWS) in the *Asia Pacific – Mumbai* region. The desktop app, the command line and the background service all use it over an encrypted HTTPS connection.
 
-## What the service does
-- **Checks the request** against the frozen feature schema 1.0.0: exactly 62 features, valid ranges, the same rules the training data passed.
-- **Runs the model** in production (v2, XGBoost) with its own evaluated decision policy, so the service makes the same decisions that were tested.
-- **Answers** with, for each flow:
-    - a label
-    - a confidence
-    - per-class probabilities
-    - a risk level
+## What it does for you
+1. NetPulse sends the **62 measurements** of each finished connection: durations, sizes, timings. No addresses, app names or websites.
+2. The service's AI model decides whether the connection looks like normal traffic or one of the attack families, and how sure it is.
+3. NetPulse receives a **label**, a **confidence** and a **risk level** for every connection and shows them to you. See [Alerts & threats](alerts-threats.md).
 
-  plus a batch risk score.
-- **Never invents an answer.** If no verified model is loaded, it returns `503 model_unavailable`, and NetPulse shows *"AI service unavailable"*.
-
-## The public API
-The client only needs one stable endpoint. New models can be deployed behind it without updating the app.
-
-| Endpoint | Auth | Purpose |
-|---|---|---|
-| `POST /v1/predict` | access key | Verdicts for 1–1,000 flows |
-| `GET /v1/model` | access key | Active model: name, version, classes, schema, quality-gate result |
-| `GET /v1/health` | none | Is a verified model loaded? (`200` ok, `503` degraded) |
-
-Service address: `https://r223uzh3ad.execute-api.ap-south-1.amazonaws.com`
-
-```json title="Request (shortened)"
-{ "schema_version": "1.0.0", "agent_id": "my-laptop",
-  "flows": [ { "flow_ref": "f5667355ba3494-37710",
-               "features": { "Dst Port": 8080, "Protocol": 6, "Flow Duration": 1500.0, "...": 0 } } ] }
-```
-
-```json title="Response (shortened)"
-{ "model_version": "2", "schema_version": "1.0.0",
-  "predictions": [ { "flow_ref": "f5667355ba3494-37710", "label": "Bot", "confidence": 0.99,
-                     "probabilities": { "Benign": 0.01, "Bot": 0.99, "...": 0.0 }, "risk": "critical" } ],
-  "risk_score": 99, "severity": "critical", "timestamp": "2026-10-08T13:20:30+00:00" }
-```
-
-Errors share one shape, `{"error": "<code>", "detail": …, "request_id": "…"}`:
-
-| Status | `error` | When |
-|---|---|---|
-| 400 | `invalid_request`, `invalid_features`, `feature_contract_violation` | The request does not match the schema |
-| 401 | `unauthorized` | Missing or wrong access key |
-| 409 | `unsupported_schema_version` | Client and service use different feature schemas |
-| 413 | `too_many_flows`, `request_too_large` | Batch over 1,000 flows or 4 MB |
-| 429 | `rate_limited` | Too many requests for this key |
-| 503 | `model_unavailable`, `inference_timeout` | No verified model, or inference too slow |
-
-## Risk levels
-Risk is a documented rule, not a second model:
-- **Per-flow risk** = impact weight of the family × confidence.
-- **Levels:** `low` < 0.2 ≤ `medium` < 0.5 ≤ `high` < 0.8 ≤ `critical`.
-- **Batch `risk_score`** = 100 × the highest flow risk in the batch.
-
-NetPulse on your computer then aggregates over the last 5 minutes.
+The model is never copied onto your computer. It can therefore be improved in the service, and every NetPulse version benefits without an update.
 
 ## The model
 
-| | Model v2 (in production) |
+| | Current model (version 2) |
 |---|---|
-| Algorithm | XGBoost (gradient-boosted trees) |
-| Training data | CSE-CIC-IDS2018, 7 families |
-| Macro-F1 (held-out test split) | 0.867 |
-| Bot recall | 0.997 |
-| False alarms on benign traffic | 0.44 % |
-| Report-only families | WebAttack, Infiltration (too few or too ambiguous samples to gate on) |
+| Trained on | CSE-CIC-IDS2018: real attack and normal traffic, about 12 million labelled connections |
+| Detects | Bot, DoS, DDoS, password guessing (brute force), web attacks, infiltration |
+| Overall accuracy (macro-F1) | 0.867 |
+| Bot connections found | 99.7 % |
+| False alarms on normal traffic | 0.44 % |
 
-The previous model (v1) is kept as a fallback. A model is promoted only after it passes the quality gate, and the test split is evaluated once per model.
+Infiltration is the hardest family to tell apart from normal traffic, which is why NetPulse shows it as amber *Worth a look*. [Why](alerts-threats.md#the-infiltration-limitation)
 
-## How NetPulse protects you from bad answers
-The client accepts a verdict only if the answer:
-- uses the same feature schema
-- names a model version
-- has **exactly one prediction per flow sent, in the same order, for the same flow reference**
-- contains only possible values (confidence and probabilities between 0 and 1, a known risk level, risk score ≤ 100)
+## Safeguards
+- **No answer, no verdict.** If the service cannot be reached, or cannot answer properly, NetPulse keeps the connections in a queue and checks them later. Nothing is guessed on your computer, and nothing is marked safe or unsafe until the service has answered.
+- **Only real answers are accepted.** NetPulse checks that every answer matches exactly the connections it sent. An incomplete, mixed-up or altered answer is discarded and the connections stay queued.
+- **Encrypted.** Everything travels over HTTPS.
+- **Your key, nobody else's.** Each person gets an individual [access key](../access.md). The service stores only a fingerprint of it, never the key itself, and a key can be revoked on its own.
 
-Anything else, whether truncated, reordered or tampered with, is treated like no answer. The flows stay queued and **no verdict is stored**. The connection itself is HTTPS, so answers cannot be changed in transit without breaking TLS.
-
-## Access keys
-- Access is **invite-only**: each person gets a personal key, `np_…`, through the [request form](../access.md). The key alone identifies the user; the computer name sent with requests is only a label.
-- The service stores only a **SHA-256 hash** of each key and compares it in constant time. Without any configured keys it refuses everything (fail-closed).
-- Keys are never part of the installer and never written into `netpulse.toml`. A key can be revoked on its own without affecting anyone else.
-
-## Availability and cost
-The service is serverless. It scales to zero when idle, and a cold start takes a few seconds; NetPulse retries and queues meanwhile. While the service is unreachable, NetPulse keeps up to 50,000 flows and checks them when it is back.
+## Availability
+- **First request after a quiet period:** the service starts on demand, so it can take a few seconds. NetPulse waits and retries by itself.
+- **Outages:** NetPulse keeps up to 50,000 connections waiting and checks them when the service is back. Home shows *NetPulse AI not reachable* meanwhile.
+- **Status check:** `netpulse status` or `netpulse config check` tell you whether the service is reachable and accepts your key.
