@@ -12,6 +12,22 @@ The single document for maintaining NetPulse after release. Read it top to botto
 
 **Status legend:** ✅ **AUTOMATED** = verified to run by itself · 🟠 **CURRENTLY MANUAL** = you run the command shown · 🔒 **NEEDS APPROVAL** = changes AWS or costs money.
 
+> **Verified end to end with v0.1.0 (2026-10-08).** Each step below was run for real:
+> 1. Quality gate green.
+> 2. `ci.yml` green.
+> 3. Tag push → `release.yml`: 3 package jobs + publish check, all green.
+> 4. `publish_release.py v0.1.0` → draft with 10 files.
+> 5. `gh release download` from the draft → SHA-256 matched → fresh install as a new user → first run OK → monitoring scored by AWS.
+> 6. `gh release edit --draft=false --latest` → `pages.yml` started by the release event → live `downloads.json` showed 0.1.0.
+> 7. An anonymous public download was byte-identical.
+>
+> Also verified: a 0.1.0 → 0.1.1 upgrade over a running install, `bump_version.py` and `sync_website_docs.py`.
+>
+> **Not yet exercised:**
+> - the CI-side draft creation (needs your `WEBSITE_RELEASE_TOKEN`, §8)
+> - model publishing/rollback on AWS (no second gated model yet)
+> - an inference-image redeploy with these exact steps; the same steps were used for the 2026-10-08 deployment
+
 ---
 
 ## 1. Project architecture
@@ -74,7 +90,7 @@ The client never contains the model. It sends 62 numbers per flow to `POST /v1/p
 | AWS CLI v2 | profile `default` = the NetPulse-AI account | only for AWS (§7) |
 | mkdocs-material | 9.6.x, in `eda-env` | only for the website: `pip install "mkdocs-material==9.6.*"` |
 
-The website build pages are at `U:\Projects\netpulse-website`; clone it next to the private repo: `gh repo clone Devbysahilsingh/netpulse-website U:\Projects\netpulse-website`.
+The website checkout must sit next to the private repo (`U:\Projects\netpulse-website`); on a new machine: `gh repo clone Devbysahilsingh/netpulse-website U:\Projects\netpulse-website`.
 
 ### Build and run
 
@@ -446,6 +462,7 @@ Rules:
 | `publish_release.py`: `no '## [X.Y.Z]' section` | Write the CHANGELOG section, commit, push. The tag does not need to move, because the script reads the CHANGELOG from your working copy. |
 | Pages build fails at `gen_downloads.py` | No published release yet, a missing SHA256SUMS entry, or a broken asset link. The error names it. |
 | Pages build fails in `mkdocs build --strict` | A broken link or anchor in `docs/`. The log names the file. |
+| Pages **deploy** job fails after a release event (*"Tag vX.Y.Z is not allowed to deploy to github-pages"*) | The `github-pages` environment must allow tags `v*` as well as `main`. This was set up once on 2026-10-08. If it is ever lost: `gh api -X POST repos/Devbysahilsingh/netpulse-website/environments/github-pages/deployment-branch-policies -f name='v*' -f type=tag`, then `gh workflow run pages.yml --repo Devbysahilsingh/netpulse-website` |
 | Users get 401 | SSM token list wrong or missing: check `aws logs tail … --filter-pattern agent_tokens_unavailable`; restore with `put-parameter` from `server\.secrets\aws_agent_tokens.json` |
 | Users get "AI service unavailable" | `curl $api/v1/health`. `503`: no verified model, so check `s3_publish status`. Timeout: check the Lambda logs and the AWS Health Dashboard. |
 | Windows build is slow (~35 min) on a fresh cache | It compiles the Tauri CLI once; later runs reuse the cache |
