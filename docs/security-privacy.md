@@ -30,19 +30,19 @@ Every installer and archive contains only:
 They contain **no** access keys, **no** cloud credentials (no AWS keys, IAM credentials or similar), **no** model, and **no** private infrastructure information. Every release build is checked automatically for secret-looking content before it is published.
 
 ## Unsigned installers
-NetPulse 0.1.0 is not code-signed, so Windows SmartScreen and macOS Gatekeeper warn on first launch ([what you will see](install/index.md#why-do-i-see-a-security-warning)). To make sure your file is the published one, compare its SHA-256 checksum:
+NetPulse is not code-signed yet, so Windows SmartScreen and macOS Gatekeeper warn on first launch ([what you will see](install/index.md#why-do-i-see-a-security-warning)). To make sure your file is the published one, compare its SHA-256 checksum:
 
 === "Windows (PowerShell)"
     ```powershell
-    Get-FileHash .\NetPulse_0.1.0_x64-setup.exe -Algorithm SHA256
+    Get-FileHash .\{{ windows_installer }} -Algorithm SHA256
     ```
 === "Linux"
     ```bash
-    sha256sum NetPulse_0.1.0_amd64.deb
+    sha256sum {{ linux_deb }}
     ```
 === "macOS"
     ```bash
-    shasum -a 256 NetPulse_0.1.0_aarch64.dmg
+    shasum -a 256 {{ macos_dmg }}
     ```
 
 The value must equal the one in `SHA256SUMS-*.txt` on the [release page](https://github.com/Devbysahilsingh/netpulse-website/releases) and on the [Download page](download.md).

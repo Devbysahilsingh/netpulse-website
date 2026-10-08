@@ -36,7 +36,7 @@ The model in service is **version 2** (XGBoost). It passed the release quality g
 
 ## Status
 
-NetPulse 0.1.0 is the first public release.
+The current version is NetPulse {{ version }} (released {{ release_date }}); 0.1.0 was the first public release.
 - **Windows:** the main, fully tested platform.
-- **Linux and macOS:** packages are provided. See [Releases](releases.md) for what was tested where.
+- **Linux and macOS:** packages are provided. See [Releases](releases.md) for known limitations.
 - **Access:** invite-only. You need a personal access key ([FAQ](faq.md#how-do-i-get-an-access-key)).

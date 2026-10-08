@@ -1,0 +1,48 @@
+# Builds and deploys the website. The download page, releases page and
+# downloads.json are generated from the latest PUBLISHED GitHub Release at build
+# time, so publishing (or editing/deleting) a release updates the site by itself.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published, edited, deleted]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "mkdocs-material==9.6.*"
+      - name: release data (download page, releases, downloads.json)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/gen_downloads.py
+      - run: mkdocs build --strict
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -3,6 +3,16 @@
 ### How do I get an access key?
 NetPulse is **invite-only** while the service is young. Keys are personal and handed out by the maintainer. To ask for one, contact [@Devbysahilsingh on GitHub](https://github.com/Devbysahilsingh). You will receive your key privately; never post a key in a public issue. One key is issued per computer name (`agent_id`).
 
+### How do I update NetPulse?
+**NetPulse does not update itself yet, and does not tell you about new versions.** New versions are announced on the [Releases](releases.md) page and the [Download](download.md) page always offers the latest one. To update:
+
+1. Close NetPulse. If you use the background service, stop it first (`netpulse service stop`, as administrator/root).
+2. Download the new version and install it **over** the old one, exactly like the first time.
+3. Your settings, access key and history are kept: they live in your user folder, not in the program folder.
+4. Start NetPulse (and the service) again. The footer of NetPulse Home shows the new version; `netpulse version` shows it for the CLI.
+
+Automatic updates are planned for a later version.
+
 ### Is NetPulse free?
 The download is free. The AI service is currently available by invitation.
 

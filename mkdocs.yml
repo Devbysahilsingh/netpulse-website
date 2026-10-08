@@ -4,7 +4,7 @@ site_url: https://devbysahilsingh.github.io/netpulse-website/
 repo_url: https://github.com/Devbysahilsingh/netpulse-website
 repo_name: netpulse-website
 edit_uri: ""
-copyright: NetPulse AI 0.1.0 · Installers are published on GitHub Releases
+copyright: NetPulse AI · Installers are published on GitHub Releases
 
 theme:
   name: material
@@ -34,6 +34,9 @@ theme:
     - content.code.copy
     - content.tabs.link
     - toc.follow
+
+hooks:
+  - hooks/release_vars.py      # {{ version }} etc. from docs/assets/downloads.json
 
 extra_css:
   - assets/extra.css
@@ -77,3 +80,7 @@ nav:
       - Troubleshooting: troubleshooting.md
       - FAQ: faq.md
   - Releases: releases.md
+  - Maintainers:
+      - Maintainer guide: maintainer/index.md
+      - Release process: maintainer/release-process.md
+      - Release checklist: maintainer/release-checklist.md

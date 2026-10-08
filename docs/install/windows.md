@@ -3,7 +3,7 @@
 **Needs:** Windows 10 or 11, 64-bit · about 30 MB of disk · your [access key](../faq.md#how-do-i-get-an-access-key) · the free **Npcap** driver (step 2).
 
 ## 1. Download
-Download **`NetPulse_0.1.0_x64-setup.exe`** from the [Download page](../download.md#windows).
+Download **`{{ windows_installer }}`** from the [Download page](../download.md#windows).
 
 ## 2. Install Npcap (once)
 NetPulse needs **Npcap** to see network traffic. Npcap's licence does not allow other programs to bundle it, so **you install it yourself, once**. NetPulse never installs it for you and never works around it.
@@ -15,10 +15,10 @@ NetPulse needs **Npcap** to see network traffic. Npcap's licence does not allow 
 If you skip this, NetPulse tells you on its setup screen, shows the same link with a *Copy link* button, and offers *Check again* once Npcap is installed. Saved captures (`netpulse scan --pcap`) can be analysed without Npcap.
 
 ## 3. Install NetPulse
-1. Double-click `NetPulse_0.1.0_x64-setup.exe`.
+1. Double-click `{{ windows_installer }}`.
 2. Because the installer is not code-signed yet, Microsoft Defender SmartScreen may show **"Windows protected your PC"**:
     - Click **More info**.
-    - Check that the file name is `NetPulse_0.1.0_x64-setup.exe` and the publisher reads *Unknown publisher*.
+    - Check that the file name is `{{ windows_installer }}` and the publisher reads *Unknown publisher*.
     - Click **Run anyway**.
 3. The installer installs **for your user only**. It needs no administrator rights, and puts NetPulse in:
    ```
@@ -30,7 +30,7 @@ If you skip this, NetPulse tells you on its setup screen, shows the same link wi
 4. Finish. NetPulse appears in the Start menu as **NetPulse**.
 
 !!! tip "Silent install (IT admins)"
-    `NetPulse_0.1.0_x64-setup.exe /S` installs without questions; `"%LOCALAPPDATA%\NetPulse\uninstall.exe" /S` removes it.
+    `{{ windows_installer }} /S` installs without questions; `"%LOCALAPPDATA%\NetPulse\uninstall.exe" /S` removes it.
 
 ## 4. Launch and connect
 1. Open **NetPulse** from the Start menu.

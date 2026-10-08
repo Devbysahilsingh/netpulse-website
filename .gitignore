@@ -1,3 +1,7 @@
 site/
 __pycache__/
 .cache/
+# generated from the GitHub Releases by scripts/gen_downloads.py on every build
+docs/download.md
+docs/releases.md
+docs/assets/downloads.json

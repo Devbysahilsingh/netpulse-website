@@ -18,7 +18,7 @@ hide:
 [Read the docs](what-is-netpulse.md){ .md-button }
 </div>
 
-<p class="np-small">Version 0.1.0 · Windows 10/11 (64-bit), Linux x86_64, macOS 11+ on Apple Silicon · Free download · Access is invite-only for now: you need an <a href="faq/#how-do-i-get-an-access-key">access key</a>.</p>
+<p class="np-small">Version {{ version }} ({{ release_date }}) · Windows 10/11 (64-bit), Linux x86_64, macOS 11+ on Apple Silicon · Free download · Access is invite-only for now: you need an <a href="faq/#how-do-i-get-an-access-key">access key</a>.</p>
 
 </div>
 
@@ -54,5 +54,5 @@ hide:
 
 Infiltration is shown in amber because the model is less certain about it. See [how to read AI results](desktop.md#how-to-read-the-ai-results).
 
-!!! info "First public release"
-    NetPulse 0.1.0 is the first public release. The installers are not code-signed yet, so Windows and macOS show a warning the first time. The [installation guides](install/index.md) show what you will see and how to continue.
+!!! info "Unsigned installers"
+    The installers are not code-signed yet, so Windows and macOS show a warning the first time. The [installation guides](install/index.md) show what you will see and how to continue.

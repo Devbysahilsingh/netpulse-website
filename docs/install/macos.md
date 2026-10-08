@@ -3,11 +3,11 @@
 **Needs:** macOS 11 Big Sur or newer · a Mac with **Apple Silicon** (M1 or newer) · your [access key](../faq.md#how-do-i-get-an-access-key). Intel Macs can use the CLI built from source for now.
 
 ## 1. Download
-Download **`NetPulse_0.1.0_aarch64.dmg`** from the [Download page](../download.md#macos).
+Download **`{{ macos_dmg }}`** from the [Download page](../download.md#macos).
 
 ## 2. Install
 1. Open the `.dmg` and drag **NetPulse** into **Applications**.
-2. Because NetPulse 0.1.0 is **not signed or notarised by Apple** yet, the first launch shows *"NetPulse cannot be opened because the developer cannot be verified"* (or *"Apple could not verify…"*). To open it once:
+2. Because NetPulse is **not signed or notarised by Apple** yet, the first launch shows *"NetPulse cannot be opened because the developer cannot be verified"* (or *"Apple could not verify…"*). To open it once:
     - **macOS 15 Sequoia and newer:** try to open NetPulse, click **Done**. Then open *System Settings → Privacy & Security*, scroll to *Security*, click **Open Anyway** next to NetPulse, and confirm with your password.
     - **macOS 11–14:** in *Finder → Applications*, **right-click (Control-click) NetPulse → Open**, then click **Open**.
 
@@ -38,10 +38,10 @@ The CLI is inside the app bundle:
 sudo ln -sf /Applications/NetPulse.app/Contents/MacOS/netpulse /usr/local/bin/netpulse
 netpulse status
 ```
-A CLI-only `netpulse-cli_0.1.0_macos_aarch64.tar.gz` is also on the [Download page](../download.md#macos). If macOS blocks the downloaded CLI, run `xattr -d com.apple.quarantine ./netpulse` once.
+A CLI-only `{{ macos_cli }}` is also on the [Download page](../download.md#macos). If macOS blocks the downloaded CLI, run `xattr -d com.apple.quarantine ./netpulse` once.
 
 ## Update
-Drag the newer NetPulse into Applications and replace the old one. Settings and history are kept.
+NetPulse does not update itself yet ([how updates work](../faq.md#how-do-i-update-netpulse)). Quit NetPulse (and `sudo netpulse service stop` if you use the service), then drag the newer NetPulse into Applications and replace the old one. Settings and history are kept.
 
 ## Uninstall
 1. Remove the service if you installed it: `sudo netpulse service uninstall`.

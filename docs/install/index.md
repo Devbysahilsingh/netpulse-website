@@ -5,7 +5,7 @@ Every package contains the **desktop app** and the **`netpulse` command line**. 
 | | Windows | Linux | macOS |
 |---|---|---|---|
 | Guide | [Windows](windows.md) | [Linux](linux.md) | [macOS](macos.md) |
-| Package | `NetPulse_0.1.0_x64-setup.exe` | `.deb` or `.AppImage` | `.dmg` |
+| Package | `{{ windows_installer }}` | `.deb` or `.AppImage` | `.dmg` |
 | Needs | Windows 10/11 64-bit, [Npcap](https://npcap.com/#download) | x86_64, WebKitGTK 4.1, libpcap | macOS 11+, Apple Silicon |
 | Admin rights | Only for Npcap and the optional service | `sudo` for the `.deb`, capture rights | Capture rights (BPF) |
 
@@ -21,7 +21,7 @@ NetPulse is **invite-only** for now. To use the AI service you need a personal *
 4. **Start monitoring.** NetPulse picks the adapter that carries your internet traffic.
 
 ## Why do I see a security warning?
-NetPulse 0.1.0 is **not code-signed** yet. Code-signing certificates are paid, and this first release does not have one. So:
+NetPulse is **not code-signed** yet. Code-signing certificates are paid, and the current releases do not have one. So:
 - **Windows** shows *"Windows protected your PC"* (Microsoft Defender SmartScreen) and *Unknown publisher*.
 - **macOS** says the app *"cannot be opened because the developer cannot be verified"*.
 

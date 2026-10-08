@@ -6,28 +6,28 @@ Two packages are offered on the [Download page](../download.md#linux):
 
 | Package | Best for | CLI location |
 |---|---|---|
-| `NetPulse_0.1.0_amd64.deb` | Debian, Ubuntu, Mint, Pop!_OS | `/usr/bin/netpulse` (on `PATH`) |
-| `NetPulse_0.1.0_amd64.AppImage` | Any distribution, no install | inside the AppImage; use the CLI tarball |
-| `netpulse-cli_0.1.0_linux_x86_64.tar.gz` | Servers, CLI only | wherever you unpack it |
+| `{{ linux_deb }}` | Debian, Ubuntu, Mint, Pop!_OS | `/usr/bin/netpulse` (on `PATH`) |
+| `{{ linux_appimage }}` | Any distribution, no install | inside the AppImage; use the CLI tarball |
+| `{{ linux_cli }}` | Servers, CLI only | wherever you unpack it |
 
 ## 1. Install
 === "Debian / Ubuntu (.deb)"
     ```bash
-    sudo apt install ./NetPulse_0.1.0_amd64.deb
+    sudo apt install ./{{ linux_deb }}
     ```
     `apt` also installs the dependencies, including `libpcap0.8`.
 
 === "AppImage"
     ```bash
     sudo apt install libpcap0.8            # or: sudo dnf install libpcap
-    chmod +x NetPulse_0.1.0_amd64.AppImage
-    ./NetPulse_0.1.0_amd64.AppImage
+    chmod +x {{ linux_appimage }}
+    ./{{ linux_appimage }}
     ```
 
 === "CLI only (.tar.gz)"
     ```bash
     sudo apt install libpcap0.8            # or: sudo dnf install libpcap
-    tar -xzf netpulse-cli_0.1.0_linux_x86_64.tar.gz
+    tar -xzf {{ linux_cli }}
     sudo install -m 755 netpulse /usr/local/bin/netpulse
     ```
 
@@ -60,13 +60,13 @@ netpulse status
 To keep it running across reboots, use the [systemd service](../service.md#linux) instead.
 
 ## Update
-Install the newer `.deb` the same way, or replace the AppImage. Settings and history in `~/.config/netpulse` are kept. Run the `setcap` command again after updating: replacing the file removes its capabilities.
+NetPulse does not update itself yet ([how updates work](../faq.md#how-do-i-update-netpulse)). Stop the monitor (`netpulse stop`, or `sudo netpulse service stop`), then install the newer `.deb` the same way, or replace the AppImage. Settings and history in `~/.config/netpulse` are kept. Run the `setcap` command again after updating: replacing the file removes its capabilities.
 
 ## Uninstall
 ```bash
 netpulse stop                 # if running
 sudo netpulse service uninstall   # if you installed the service
-sudo apt remove netpulse
+sudo apt remove net-pulse    # the Debian package is called net-pulse
 rm -rf ~/.config/netpulse     # optional: settings, key and history
 ```
 

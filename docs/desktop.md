@@ -64,7 +64,7 @@ A timeline of what happened:
 - protection paused
 
 ### Footer and Start / Stop
-- The footer shows the version and the AI connection, e.g. **NetPulse 0.1.0 · Connected to NetPulse AI · model 2**.
+- The footer shows the version and the AI connection, e.g. **NetPulse {{ version }} · Connected to NetPulse AI · model 2**.
 - **Start protection / Pause protection** turns monitoring on and off.
 - If `netpulse start` or the background service is already monitoring **with the same settings file**, Home shows **On (background service or terminal)** and attaches to it. Pausing from the window does not stop someone else's monitor.
 

@@ -11,7 +11,7 @@ netpulse status
 ## Installing
 
 ### Windows says "Windows protected your PC"
-NetPulse 0.1.0 is not code-signed yet. Click **More info → Run anyway**, but only for the file from the official [release page](https://github.com/Devbysahilsingh/netpulse-website/releases). [Verify the checksum](download.md#verify-your-download) if unsure.
+NetPulse is not code-signed yet. Click **More info → Run anyway**, but only for the file from the official [release page](https://github.com/Devbysahilsingh/netpulse-website/releases). [Verify the checksum](download.md#verify-your-download) if unsure.
 
 ### macOS says the developer cannot be verified
 - **macOS 15+:** *System Settings → Privacy & Security → Open Anyway*.
@@ -20,7 +20,7 @@ NetPulse 0.1.0 is not code-signed yet. Click **More info → Run anyway**, but o
 See [Install on macOS](install/macos.md#2-install).
 
 ### Linux: the AppImage does not start
-- Make it executable: `chmod +x NetPulse_0.1.0_amd64.AppImage`.
+- Make it executable: `chmod +x {{ linux_appimage }}`.
 - Some distributions need FUSE 2: `sudo apt install libfuse2`. Or run it with `--appimage-extract-and-run`.
 
 ## Capture
